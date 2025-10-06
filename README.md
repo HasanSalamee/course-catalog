@@ -1,9 +1,5 @@
 # MyCourses - Online Learning Platform
 
-A responsive course catalog web application that allows users to browse, search, and enroll in online courses.
-
-![Course Catalog Demo](https://via.placeholder.com/800x400/667eea/ffffff?text=MyCourses+Demo)
-
 ## Features
 
 -  Course Catalog** - Browse available courses with detailed information
