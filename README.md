@@ -15,7 +15,7 @@ A responsive course catalog web application that allows users to browse, search,
 -  Responsive Design** - Works perfectly on desktop, tablet, and mobile
 -  Modern UI** - Beautiful gradient design with smooth animations
 
-## 🛠 Technologies Used
+## Technologies Used
 
 - **Frontend**: HTML5, CSS3, JavaScript (ES6+)
 - **Styling**: CSS Grid, Flexbox, CSS Variables
