@@ -1,4 +1,3 @@
-// Courses Data with real images
 const coursesData = [
     {
         id: 1,
@@ -50,7 +49,6 @@ const coursesData = [
     }
 ];
 
-// Application State
 let state = {
     courses: coursesData,
     enrollments: [],
@@ -62,7 +60,6 @@ let state = {
     }
 };
 
-// DOM Elements
 const coursesGrid = document.getElementById('coursesGrid');
 const enrollmentsList = document.getElementById('enrollmentsList');
 const totalPriceElement = document.getElementById('totalPrice');
@@ -77,7 +74,6 @@ const enrollmentsSidebar = document.getElementById('enrollmentsSidebar');
 const closeSidebar = document.getElementById('closeSidebar');
 const notification = document.getElementById('notification');
 
-// Initialize Application
 function init() {
     renderCourses();
     renderEnrollments();
@@ -87,14 +83,12 @@ function init() {
     updateCartCount();
 }
 
-// Setup Event Listeners
 function setupEventListeners() {
     searchInput.addEventListener('input', handleSearch);
     applyFiltersBtn.addEventListener('click', applyFilters);
     clearFiltersBtn.addEventListener('click', clearFilters);
     closeSidebar.addEventListener('click', toggleSidebar);
     
-    // Price inputs
     minPriceInput.addEventListener('input', () => {
         state.filters.minPrice = parseInt(minPriceInput.value) || 0;
     });
@@ -103,7 +97,6 @@ function setupEventListeners() {
         state.filters.maxPrice = parseInt(maxPriceInput.value) || 1000;
     });
 
-    // Close sidebar when clicking outside
     document.addEventListener('click', (event) => {
         if (!enrollmentsSidebar.contains(event.target) && 
             !event.target.classList.contains('cart-btn') &&
@@ -113,7 +106,6 @@ function setupEventListeners() {
         }
     });
 
-    // Close sidebar on escape key
     document.addEventListener('keydown', (event) => {
         if (event.key === 'Escape' && enrollmentsSidebar.classList.contains('active')) {
             toggleSidebar();
@@ -121,7 +113,6 @@ function setupEventListeners() {
     });
 }
 
-// Render Courses
 function renderCourses() {
     const filteredCourses = getFilteredCourses();
     
@@ -148,7 +139,6 @@ function renderCourses() {
     `).join('');
 }
 
-// Render Enrollments
 function renderEnrollments() {
     if (state.enrollments.length === 0) {
         enrollmentsList.innerHTML = `
@@ -177,18 +167,15 @@ function renderEnrollments() {
     updateCartCount();
 }
 
-// Update Total Price
 function updateTotalPrice() {
     const total = state.enrollments.reduce((sum, course) => sum + course.price, 0);
     totalPriceElement.textContent = total;
 }
 
-// Update Cart Count
 function updateCartCount() {
     cartCountElement.textContent = state.enrollments.length;
 }
 
-// Enroll in Course
 function enrollCourse(courseId) {
     const course = state.courses.find(c => c.id === courseId);
     if (course && !isEnrolled(courseId)) {
@@ -200,7 +187,6 @@ function enrollCourse(courseId) {
     }
 }
 
-// Cancel Enrollment
 function cancelEnrollment(courseId) {
     const courseIndex = state.enrollments.findIndex(course => course.id === courseId);
     if (courseIndex !== -1) {
@@ -211,14 +197,12 @@ function cancelEnrollment(courseId) {
         saveToLocalStorage();
         showNotification(`Enrollment canceled for "${course.title}"`, 'warning');
         
-        // Auto-close sidebar if no enrollments left
         if (state.enrollments.length === 0) {
             setTimeout(toggleSidebar, 1500);
         }
     }
 }
 
-// Complete Enrollment Process
 function completeEnrollment() {
     if (state.enrollments.length === 0) {
         showNotification('Your cart is empty!', 'error');
@@ -228,7 +212,6 @@ function completeEnrollment() {
     const total = state.enrollments.reduce((sum, course) => sum + course.price, 0);
     showNotification(`Enrollment completed! Total: $${total}. Thank you!`, 'success');
     
-    // Clear enrollments after completion
     state.enrollments = [];
     renderCourses();
     renderEnrollments();
@@ -236,18 +219,15 @@ function completeEnrollment() {
     toggleSidebar();
 }
 
-// Check if Course is Enrolled
 function isEnrolled(courseId) {
     return state.enrollments.some(course => course.id === courseId);
 }
 
-// Handle Search
 function handleSearch() {
     state.filters.search = searchInput.value.toLowerCase();
     renderCourses();
 }
 
-// Apply Filters
 function applyFilters() {
     state.filters.instructor = instructorFilter.value;
     state.filters.minPrice = parseInt(minPriceInput.value) || 0;
@@ -256,7 +236,6 @@ function applyFilters() {
     showNotification('Filters applied successfully!', 'success');
 }
 
-// Clear All Filters
 function clearFilters() {
     state.filters = {
         search: '',
@@ -274,7 +253,6 @@ function clearFilters() {
     showNotification('All filters cleared!', 'success');
 }
 
-// Get Filtered Courses
 function getFilteredCourses() {
     return state.courses.filter(course => {
         const matchesSearch = course.title.toLowerCase().includes(state.filters.search) ||
@@ -287,7 +265,6 @@ function getFilteredCourses() {
     });
 }
 
-// Populate Instructors Dropdown
 function populateInstructors() {
     const instructors = [...new Set(state.courses.map(course => course.instructor))];
     instructorFilter.innerHTML = '<option value="">All Instructors</option>' +
@@ -296,12 +273,10 @@ function populateInstructors() {
         ).join('');
 }
 
-// Toggle Sidebar
 function toggleSidebar() {
     enrollmentsSidebar.classList.toggle('active');
 }
 
-// Show Notification
 function showNotification(message, type = 'success') {
     notification.textContent = message;
     notification.className = `notification ${type} show`;
@@ -311,12 +286,10 @@ function showNotification(message, type = 'success') {
     }, 3000);
 }
 
-// Save to Local Storage
 function saveToLocalStorage() {
     localStorage.setItem('courseEnrollments', JSON.stringify(state.enrollments));
 }
 
-// Load from Local Storage
 function loadFromLocalStorage() {
     const saved = localStorage.getItem('courseEnrollments');
     if (saved) {
@@ -326,5 +299,4 @@ function loadFromLocalStorage() {
     }
 }
 
-// Initialize app when page loads
 document.addEventListener('DOMContentLoaded', init);
